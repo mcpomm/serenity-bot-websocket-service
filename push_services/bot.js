@@ -1,16 +1,24 @@
 'use strict';
 
+const Promise = require('bluebird');
+const request = require('request');
+
 class BotPusher {
 
   constructor(client) {
     this.client = client;
   }
 
-  push(bot) {
+  push(botId) {
     let client = this.client
-    setInterval(function(){
-      client.emit('broad', `${bot} registered ${Math.random()}`)
-    }, 1000);
+
+    request(`http://localhost:3000/bots/${botId}`, (err, bot) => {
+      if(err){
+        return console.log(err);
+      }
+      console.log(bot.body);
+      client.emit('bot', bot.body);
+    })
   }
 
 };

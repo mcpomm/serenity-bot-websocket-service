@@ -31,9 +31,11 @@ io.on('connection', function(client) {
 
       case "pushBotList": {
         botListPusher.push();
-        break;
       }
-
+      case "pushBot": {
+        console.log('pushBot', final.botId);
+        botPusher.push(final.botId);
+      }
       default: {
         break;
       }
