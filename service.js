@@ -8,13 +8,15 @@ const axon = require('axon');
 const socket = axon.socket('pull');
 
 const BotPusher = require('./push_services/bot');
-const BotListPusher = require('./push_services/botlist');
+const BotUpdater = require('./push_services/botUpdater');
+const BotListPusher = require('./push_services/botList');
 
 socket.bind(3010);
 
 io.on('connection', function(client) {
 
   let botPusher = new BotPusher(client);
+  let botUpdater = new BotUpdater(client);
   let botListPusher = new BotListPusher(client);
 
 
@@ -27,14 +29,22 @@ io.on('connection', function(client) {
 
     let final = JSON.parse(msg.toString());
 
+    console.log(final);
+
     switch(final.message) {
 
       case "pushBotList": {
         botListPusher.push();
+        break;
       }
       case "pushBot": {
-        console.log('pushBot', final.botId);
         botPusher.push(final.botId);
+        break;
+      }
+      case "updateBot": {
+        console.log("receive updateBot");
+        botUpdater.push(final.botId);
+        break;
       }
       default: {
         break;

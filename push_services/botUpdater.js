@@ -3,7 +3,7 @@
 const Promise = require('bluebird');
 const request = require('request');
 
-class BotPusher {
+class BotUpdater {
 
   constructor(client) {
     this.client = client;
@@ -16,10 +16,10 @@ class BotPusher {
         return console.log(err);
       }
       console.log(bot.body);
-      client.emit('bot', bot.body);
+      client.emit('updateBot', bot.body);
     })
   }
 
 };
 
-module.exports = BotPusher;
+module.exports = BotUpdater;
